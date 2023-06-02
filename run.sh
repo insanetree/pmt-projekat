@@ -21,5 +21,5 @@ OUTDIR="$PWD/output"
 
 pushd "$NS3ROOT"
 ./ns3 build
-./ns3 run scratch/projekat.main.cc --cwd=$OUTDIR
+./ns3 run scratch/projekat/main.cc --cwd=$OUTDIR
 popd
