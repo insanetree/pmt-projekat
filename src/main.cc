@@ -40,4 +40,10 @@ int main(int argc, char* argv[]){
 	ns3::Ipv4InterfaceContainer i3i1 = ip.Assign(n3n1);
 
 	ns3::Ipv4GlobalRoutingHelper::PopulateRoutingTables();
+
+	//izvor saobracaja
+	uint16_t port = 9;
+	ns3::BulkSendHelper sender("ns3::TcpSocketFactory", ns3::InetSocketAddress(i1i0.GetAddress(1),port));
+	sender.SetAttribute("MaxBytes", ns3::UintegerValue(0));
+
 }
