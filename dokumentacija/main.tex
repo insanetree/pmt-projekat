@@ -21,7 +21,7 @@
 \begin{document}
 	\maketitle
 	\begin{abstract}
-		U ovom radu je pomoću simulatora NS-3 pokazano kako zagušenje mreže utiče na kvalitet saobraćaja. Simulirana je mreža od četiri računara, međusobno povezanih u topologiju zvezde gde dva računara tokom trajanja simulacije generišu saobraćaj ka trećem. Pad kvaliteta je pokazan velikim brojem odbačenih paketa. Posle se mreža optimizuje tako što se proširi kapacitet veze koja je usko grlo i napravi se poređenje rezultata.
+		U ovom radu je pomoću simulatora NS-3 pokazano kako zagušenje mreže utiče na propusnost saobraćaja. Simulirana je mreža od četiri računara, međusobno povezanih u topologiju zvezde gde dva računara tokom trajanja simulacije generišu saobraćaj ka trećem. Loša propusnost je pokazana velikim brojem odbačenih paketa. Posle se mreža poboljšava tako što se proširi kapacitet linka koji je usko grlo i napravi se poređenje rezultata.
 	\end{abstract}
 	\begin{keywords}
 		ns-3, simulacija, zagu\v{s}enje
@@ -32,31 +32,16 @@
 	
 	\chapter{Uvod}
 	U ovom radu će se obraditi simulacija zagušenja mreže pomoću simulatora NS-3(Network Simulator 3). 
-	Simulator je slobodan softver; njegov izvorni kod je javno dostupan za proučavanje i izmenu.\\
-	U simulaciji će se pokazati kako preopterećenje veze dovodi do gubitaka paketa i kako se performanse poboljšavaju posle povećanja kapaciteta.\\
+	Simulator je slobodan softver; njegov izvorni kod je javno dostupan za proučavanje i izmenu.
+	
+	
+	U simulaciji će se pokazati kako preopterećenje veze dovodi do gubitaka paketa i kako se performanse poboljšavaju posle povećanja kapaciteta linka.
+	
+	
 	U nastavku će biti opisan postupak pokretanja simulacije, opis simulirane topologije i pregled rezultata.
 	
-	\chapter{Pokretanje simulacije}
-	\section{Preduslovi}
-	Simulator je potrebno instalirati na \emph{Linux} operativnom sistemu pridržavajući se zvaničnog uputstva. \cite{ns3man} Posle instalacije je potrebno napraviti promenljivu okruženja NS3ROOT koja će imati vrednost putanje do korena ns-3 simulatora pokretanjem sledeće komande u terminalu:\\
-	
-	\verb|$ NS3ROOT=putanja_do_direktorijuma|\\
-	
-	Pošto je doseg ove promenljive vezan za sam proces terminala, preporučuje se da se na kraj fajla \verb|~/.bashrc| doda linija:\\
-	
-	\verb|export NS3ROOT=putanja_do_direktorijuma|\\
-	
-	Tako će i prilikom ponovnog pokretanja sistema biti definisana ova promenljiva.
-	
-	\section{Pokretanje skripte}
-	U direktorijumu projekta se nalazi \emph{Bash} skripta \verb|run.sh|. Potrebno ju je korišćenjem terminala učiniti izvršivom i pokrenuti je.
-	\begin{verbatim}
-		$ chmod u+x run.sh
-		$ ./run.sh
-	\end{verbatim}
-	U \verb|output/| direktorijumu će se pojaviti dva izlazna XML fajla u kojima će se naći broj odbačenih paketa na svakom mrežnom uređaju.
-	
 	\chapter{Opis simulacije}
+	
 	\section{Opis mreže}
 	Topologija simulirane mreže je predstavljena na slici \ref{fig:topologija}. Mreža se sastoji od četiri računara koja su povezana PPP (\emph{Point to Point Protocol}) vezama. Na računarima označenim brojevima 2 i 3 su instalirane aplikacije koje šalju UDP (\emph{User Datagram Protocol}) pakete ka računaru označenim brojem 0. 
 	\begin{figure}[htb]
@@ -66,14 +51,14 @@
 		\label{fig:topologija}
 	\end{figure}
 	
-	Prvobitno su kapaciteti svih veza isti iznose $1Mbps$.  Aplikacije konstantno šalju pakete veličine $200b$ brzinom od 5000 paketa u sekundi. Tako se prouzrokuje zagušenje saobraćaja u mrežnom uređaju u računaru 0 koji se manifestuje gubitkom paketa. Potom se kapacitet linka poveća na $10Mbps$ i posmatra se kako su se promenile performanse mreže.\\
+	Prvobitno su kapaciteti svih linkova isti i iznose 1\! Mbps.  Aplikacije konstantno šalju pakete veličine 200\! b brzinom od 5000 paketa u sekundi. Tako se prouzrokuje zagušenje saobraćaja u mrežnom uređaju u računaru 0 koji se manifestuje gubitkom paketa. Potom se kapacitet linka poveća na 10\! Mbps i posmatra se kako su se promenile performanse mreže.\\
 	IP adrese dodeljene mrežnim uređajima su navedene u tabeli \ref{tab:adr}
 	\begin{table}[htb]
 		\centering
 		\caption{Adrese mrežnih uređaja}
 		\label{tab:adr}
 		\medskip
-		\begin{tabular}{r|r}
+		\begin{tabular}{c|r}
 			\hline
 			Mrežni uređaj & Adresa \\
 			\hline
@@ -85,8 +70,32 @@
 			5 & 10.0.2.1
 		\end{tabular}
 	\end{table}
+	
+	\section{Pokretanje simulacije}
+	\subsection{Preduslovi}
+	Simulator je potrebno instalirati na \emph{Linux} operativnom sistemu pri\-drža\-vajući se zvaničnog uputstva. \cite{ns3man} Posle instalacije je potrebno napraviti promenljivu okruženja \verb|NS3ROOT| koja će imati vrednost putanje do korena NS-3 simulatora pokretanjem sledeće komande u terminalu:\\
+	
+	
+	\verb|$ NS3ROOT=putanja_do_direktorijuma|\\
+	
+	Pošto je doseg ove promenljive vezan za sam proces terminala, preporučuje se da se na kraj fajla \verb|~/.bashrc| doda linija:\\
+	
+	\verb|export NS3ROOT=putanja_do_direktorijuma|\\
+	
+	Tako će i prilikom ponovnog pokretanja sistema biti definisana ova promenljiva.
+	
+	\subsection{Pokretanje skripte}
+	U direktorijumu projekta se nalazi \emph{Bash} skripta \verb|run.sh|. Potrebno ju je korišćenjem terminala učiniti izvršivom i pokrenuti je na sledeći način:
+	\begin{verbatim}
+		$ chmod u+x run.sh
+		$ ./run.sh
+	\end{verbatim}
+	
+	
+	Skripta radi tako što sve fajlove iz \verb|h/| i \verb|src/| direktorijuma projekta kopira u \verb|scratch/| direktorijum simulatora. Posle kopiranja pokreće kompilaciju i izlazne fajlove snima \verb|output/| direktorijum. U \verb|output/| direktorijumu će se pojaviti dva izlazna XML fajla u kojima će se naći broj odbačenih paketa na svakom mrežnom uređaju.
+	
 	\section{Opis skripte}
-	Glavni deo skripte je u funkciji \verb|void buildTopology(bool optimize)| koja u zavisnosti od parametra pravi mrežu u kojoj je veza između računara 0 i 1 kapaciteta $1Mbps$ ili $10Mbps$.
+	Glavni deo skripte je u funkciji \verb|void buildTopology(bool optimize)| koja u zavisnosti od parametra pravi mrežu u kojoj je link između računara 0 i 1 kapaciteta 1\! Mbps ili 10\! Mbps.
 	\subsection{Kreiranje uređaja i veza između njih}
 	\begin{verbatim}
 		NodeContainer nodes;
@@ -96,19 +105,25 @@
 		internet.Install(nodes);
 		
 		PointToPointHelper p2p;
-		p2p.SetQueue("ns3::DropTailQueue", "MaxSize", StringValue(QueueSize));
-		p2p.SetDeviceAttribute("DataRate", StringValue(BaseBandwidth));
+		p2p.SetQueue("ns3::DropTailQueue",
+		    "MaxSize", StringValue(QueueSize));
+		p2p.SetDeviceAttribute("DataRate", 
+		    StringValue(BaseBandwidth));
 		p2p.SetChannelAttribute("Delay", StringValue(LinkDelay));
-		NetDeviceContainer n2n1 = p2p.Install(nodes.Get(2), nodes.Get(1));
-		NetDeviceContainer n3n1 = p2p.Install(nodes.Get(3), nodes.Get(1));
+		NetDeviceContainer n2n1 = p2p.Install(nodes.Get(2), 
+		    nodes.Get(1));
+		NetDeviceContainer n3n1 = p2p.Install(nodes.Get(3), 
+		    nodes.Get(1));
 		if(optimize){
-			p2p.SetDeviceAttribute("DataRate", StringValue(IncreasedBandwidth));
+			p2p.SetDeviceAttribute("DataRate", 
+			    StringValue(IncreasedBandwidth));
 		}
 		NetDeviceContainer n1n0 = p2p.Install(nodes.Get(1), nodes.Get(0));
 	\end{verbatim}
-	Možemo primetiti da će veza između računara 0 i 1 biti povećanog kapaciteta ako parametar \verb|optimize| ima vrednost \verb|true|.
+	
+	Možemo primetiti da će veza između računara 0 i 1 biti povećanog ka\-pa\-citeta ako parametar \verb|optimize| ima vrednost \verb|true|.
 	\subsection{Dodela adresa}
-	U ovom delu skripte će se mrežnim uređajima dodeliti IP adrese i popuniće se tabele rutiranja.
+	U ovom delu skripte će se mrežnim uređajima dodeliti IP adrese i po\-puniće se tabele rutiranja.
 	\begin{verbatim}
 	Ipv4AddressHelper ip;
 	
@@ -149,7 +164,7 @@
 		sinkApps.Start(Seconds(0.0));
 		sinkApps.Stop(Seconds(30.0));
 	\end{verbatim}
-	\subsection{Pokretanje simulacije i snimanje izveštaja}
+	\subsection{Izvršavanje simulacije i snimanje izveštaja}
 	Za analizu simulacije je upotrebljena \verb|ns3::FlowMonitor| klasa čiji opis je dostupan u dokumentaciji.\cite{ns3doc}
 	\begin{verbatim}
 		Ptr<FlowMonitor> flowMonitor;
@@ -159,8 +174,8 @@
 		Simulator::Stop(Seconds(30.0));
 		Simulator::Run();
 		
-		flowMonitor->SerializeToXmlFile(optimize?"izlazsa.xml":"izlazbez.xml",
-		    false,true);
+		flowMonitor->SerializeToXmlFile
+		    (optimize?"izlazsa.xml":"izlazbez.xml", false,true);
 		Simulator::Destroy();
 	\end{verbatim}
 	
@@ -191,10 +206,11 @@
 			Izgubljeno paketa & 1190 
 		\end{tabular}
 	\end{table}
+	
 	Rezultati su pokazali da je zbog uskog grla drastično smanjen kvalitet saobraćaja. Posle optimizacije je procenat izgubljenih paketa smanjen sa $47.42\%$ na $4.76\%$.
 	
 	\chapter{Zaključak}
-	U ovom projektu je prikazana simulacija zagušenja korišćenjem NS-3 simulatora. Opisana je mreža u kojoj je zagušenje pokazano i objašnjena je skripta  kojom je simulacija kreirana. Pokazano je kako neoptimalna topologija negativno utiče na kvalitet saobraćaja. Topologija je relativno jednostavna jer cilj rada nije bila kompleksnost, nego pokazivanje mogućnosti analize mreže uz pomoć simulatora. 
+	U ovom projektu je prikazana simulacija zagušenja korišćenjem NS-3 simulatora. Opisana je mreža u kojoj je zagušenje pokazano i objašnjena je skripta  kojom je simulacija kreirana. Pokazano je kako nedovoljan kapacitet linka negativno utiče na kvalitet saobraćaja. Topologija je relativno jednostavna jer cilj rada nije bila kompleksnost, nego pokazivanje mogućnosti analize mreže uz pomoć simulatora. 
 	\begin{thebibliography}{10}
 		\addcontentsline{toc}{chapter}{Literatura}
 		\bibitem{ns3man} \emph{ns-3 Tutuorial}, izdanje za ns-3.38, 2023; dostupno online:
@@ -284,15 +300,21 @@
 			
 			//pravimo linkove
 			PointToPointHelper p2p;
-			p2p.SetQueue("ns3::DropTailQueue", "MaxSize", StringValue(QueueSize));
-			p2p.SetDeviceAttribute("DataRate", StringValue(BaseBandwidth));
+			p2p.SetQueue("ns3::DropTailQueue", 
+			    "MaxSize", StringValue(QueueSize));
+			p2p.SetDeviceAttribute("DataRate", 
+			    StringValue(BaseBandwidth));
 			p2p.SetChannelAttribute("Delay", StringValue(LinkDelay));
-			NetDeviceContainer n2n1 = p2p.Install(nodes.Get(2), nodes.Get(1));
-			NetDeviceContainer n3n1 = p2p.Install(nodes.Get(3), nodes.Get(1));
+			NetDeviceContainer n2n1 = p2p.Install
+			    (nodes.Get(2), nodes.Get(1));
+			NetDeviceContainer n3n1 = p2p.Install
+			    (nodes.Get(3), nodes.Get(1));
 			if(optimize){
-				p2p.SetDeviceAttribute("DataRate", StringValue(IncreasedBandwidth));
+				p2p.SetDeviceAttribute("DataRate",
+				    StringValue(IncreasedBandwidth));
 			}
-			NetDeviceContainer n1n0 = p2p.Install(nodes.Get(1), nodes.Get(0));
+			NetDeviceContainer n1n0 = 
+			    p2p.Install(nodes.Get(1), nodes.Get(0));
 			
 			//dodela IP adresa
 			Ipv4AddressHelper ip;
@@ -333,10 +355,11 @@
 			
 			//snimanje izvestaja
 			AsciiTraceHelper ascii;
-			Ptr<OutputStreamWrapper> stream = ascii.CreateFileStream(optimize?
-			    "bezoptimizacije.tr":"saoptimizacijom.tr");
+			Ptr<OutputStreamWrapper> stream = ascii.CreateFileStream
+			    (optimize?"bezoptimizacije.tr":"saoptimizacijom.tr");
 			p2p.EnableAsciiAll(stream);
-			p2p.EnablePcapAll(optimize?"bezoptimizacije":"saoptimizacijom");
+			p2p.EnablePcapAll(optimize?
+			    "bezoptimizacije":"saoptimizacijom");
 			
 			Ptr<FlowMonitor> flowMonitor;
 			FlowMonitorHelper flowMonitorHelper;
@@ -356,7 +379,8 @@
 		#include "topology.h"
 		
 		int main(int argc, char* argv[]){
-			Config::SetDefault ("ns3::Ipv4GlobalRouting::RespondToInterfaceEvents", 
+			Config::SetDefault 
+			    ("ns3::Ipv4GlobalRouting::RespondToInterfaceEvents", 
 			    BooleanValue(true));
 			
 			buildTopology(false);
