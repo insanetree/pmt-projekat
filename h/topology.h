@@ -15,8 +15,8 @@
 
 #define BaseBandwidth "1Mbps"
 #define IncreasedBandwidth "10Mbps"
-#define QueueSize "100p"
-
+#define QueueSize "1024p"
+#define LinkDelay "5ms"
 
 using namespace ns3;
 
