@@ -1,0 +1,131 @@
+\documentclass{beamer}
+
+\mode<presentation>
+
+  \usetheme{Copenhagen}
+  \setbeamercovered{transparent}
+%  \usecolortheme{seahorse}
+  \usecolortheme{rose}
+%  \usecolortheme{wolverine}
+%  \useoutertheme{infolines}
+
+
+\usepackage[T1]{fontenc}
+\usepackage[serbian]{babel}
+\usepackage[cp1250]{inputenc}
+\usepackage{times}
+
+
+\usepackage{graphics}
+\usepackage{eurosym}
+\usepackage{multirow}
+\usepackage{multimedia}
+\usepackage{color}
+\usepackage{multirow}
+%\usepackage{subfig}
+
+
+\title[Simulacija zagu\v{s}enja \hspace{1em} {\scriptsize \insertframenumber\ / \inserttotalframenumber}]
+{Simulacija zagu\v{s}enja pomo\'{c}u ns-3\\[3ex]
+\small
+projekat iz predmeta\\
+Principi modernih telekomunikacija (IR3PMT)\\
+2023.}
+
+\author[A. Popovi\'{c} --- IR3PMT 2023.]{Aleksandar Popovi\'{c}}
+
+\date[]{}
+
+
+%\AtBeginSection[]
+%{
+%  \begin{frame}<beamer>
+%    \frametitle{Sadržaj}
+%    \tableofcontents[currentsection,hideothersubsections]
+%  \end{frame}
+%}
+
+
+%\beamerdefaultoverlayspecification{<+->}
+
+
+\begin{document}
+
+\begin{frame}
+%  \vfill
+  \titlepage
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Sadržaj}
+    \tableofcontents
+\end{frame}
+
+
+\section{Uvod}
+% nazivi odeljaka ce se prikazati u sadrzaju
+
+\begin{frame}
+ \frametitle{Servisni sistemi \dots}
+
+
+\begin{block}{Karakteristike:}
+  \begin{itemize}
+	\item	<1-> Poissonov tok dolazaka, sa protokom $\lambda$,
+	\item	<2-> \alert{fiksno} vreme obrade $\tau=1/\mu$,
+	\item	<3-> neogranièen kapacitet èekaonice,
+	\item	<4-> beskonaèna populacija,
+	\item	<5-> FCFS disciplina opsluživanja
+	% <k-> znaci da se sadrzaj u tom redu prikazuje od k-tog klika nadalje
+  \end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Matematièki model}
+  \begin{itemize}
+	\item	$T_Q$ --- trajanje èekanja,
+	\item	$T_S$ --- trajanje obrade ($=\tau$)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Analiza}
+
+Iskorišæenost servera: $\rho = \lambda / \mu$\\[1ex]
+Pollaczek-Khinchinova formula
+ \begin{columns}[T]
+	\column{.35\textwidth}
+	 \begin{block}{$M$/$G$/1}<1->
+	$$T_{Q}=\frac{\lambda \overline{\tau^{2}}}{2(1-\rho)}
+$$
+\end{block}
+	\column{.55\textwidth}
+  \begin{exampleblock}{$M$/$D$/1}<2->
+	$$\overline{\tau^{2}}=\frac{1}{\mu^{2}} \quad \Rightarrow \quad
+	T_{Q}=\frac{\rho}{2\mu(1-\rho)}
+$$
+\end{exampleblock}
+\end{columns}
+\end{frame}
+
+
+\section{Proraèun \dots}
+
+\begin{frame}
+ \frametitle{Primer}
+ \begin{exampleblock}{Zadatak}<1->
+	Poruke fiksne dužine 1000 B, koje se generišu po Poissonovoj raspodeli, prenose se linijom na kojoj je protok 9600 b/s. Iskorišæenost linije iznosi 70\%. Odrediti proseèno trajanje èekanja.
+\end{exampleblock}
+\begin{alertblock}{Rešenje:}<2->
+\begin{gather*}
+\uncover<2-> \tau=\mu^{-1}=\displaystyle{\frac{1000\cdot8\mbox{ b}}{9600\mbox{ b/s}}}=0,\!83\mbox{ s} ,\quad \rho=\lambda \tau = 0,\!7\ \\[1ex]
+\uncover<3->{T_{Q}=\frac{\rho}{2\mu(1-\rho)}= 0,\!97\mbox{ s}}
+\end{gather*}
+
+\end{alertblock}
+\end{frame}
+
+\end{document}
+
