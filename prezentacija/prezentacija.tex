@@ -1,13 +1,13 @@
-\documentclass{beamer}
+\documentclass[aspectratio=169]{beamer}
 
 \mode<presentation>
 
   \usetheme{Copenhagen}
   \setbeamercovered{transparent}
 %  \usecolortheme{seahorse}
-  \usecolortheme{rose}
+%  \usecolortheme{rose}
 %  \usecolortheme{wolverine}
-%  \useoutertheme{infolines}
+  \useoutertheme{infolines}
 
 
 \usepackage[T1]{fontenc}
@@ -22,8 +22,7 @@
 \usepackage{multimedia}
 \usepackage{color}
 \usepackage{multirow}
-%\usepackage{subfig}
-
+\usepackage{subfig}
 
 \title[Simulacija zagu\v{s}enja \hspace{1em} {\scriptsize \insertframenumber\ / \inserttotalframenumber}]
 {Simulacija zagu\v{s}enja pomo\'{c}u ns-3\\[3ex]
@@ -63,11 +62,10 @@ Principi modernih telekomunikacija (IR3PMT)\\
 \end{frame}
 
 
-\section{Uvod}
+\section{Simulator}
 % nazivi odeljaka ce se prikazati u sadrzaju
 
 \begin{frame}
- \frametitle{NS-3}
 
 \begin{columns}
 	\column{.60\textwidth}
@@ -86,49 +84,88 @@ Principi modernih telekomunikacija (IR3PMT)\\
 
 \end{frame}
 
+\section{Simulacija}
+\subsection{Opis simulacije}
 \begin{frame}
-\frametitle{Matematièki model}
-  \begin{itemize}
-	\item	$T_Q$ --- trajanje èekanja,
-	\item	$T_S$ --- trajanje obrade ($=\tau$)
-	\end{itemize}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\begin{itemize}
+			\item <1-> Proizvodimo zagu\v{s}enje
+			\item <2-> Ra\v{c}unari 2 i 3 \v{s}alju UDP pakete ka 0
+		\end{itemize}
+		\column{0.5\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics{../slike/topologija_simple.png}
+		\end{figure}
+	\end{columns}
 \end{frame}
 
+\subsection{Prvobitna postavka}
 \begin{frame}
- \frametitle{Analiza}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\begin{itemize}
+			\item Brzina slanja: 1\! Mbps
+			\item Svi linkovi kapaciteta 1\! Mbps
+			\item O\v{c}ekujemo velik broj izgubljenih paketa
+		\end{itemize}
+		\column{0.5\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics{../slike/topologija_simple.png}
+		\end{figure}
+	\end{columns}
+\end{frame}
 
-Iskorišæenost servera: $\rho = \lambda / \mu$\\[1ex]
-Pollaczek-Khinchinova formula
- \begin{columns}[T]
-	\column{.35\textwidth}
-	 \begin{block}{$M$/$G$/1}<1->
-	$$T_{Q}=\frac{\lambda \overline{\tau^{2}}}{2(1-\rho)}
-$$
-\end{block}
-	\column{.55\textwidth}
-  \begin{exampleblock}{$M$/$D$/1}<2->
-	$$\overline{\tau^{2}}=\frac{1}{\mu^{2}} \quad \Rightarrow \quad
-	T_{Q}=\frac{\rho}{2\mu(1-\rho)}
-$$
-\end{exampleblock}
+\subsection{Pobolj\v{s}anje}
+\begin{frame}
+\begin{columns}
+	\column{0.5\textwidth}
+	\begin{itemize}
+		\item Brzina slanja ostala ista
+		\item Kapacitet linka izme\dj{}u ra\v{c}unara 0 i 1 pove\'{c}an na 10\! Mbps
+		\item O\v{c}ekujemo mali broj izgubljenih paketa
+	\end{itemize}
+	\column{0.5\textwidth}
+	\begin{figure}
+		\centering
+		\includegraphics{../slike/topologija_simple.png}
+	\end{figure}
 \end{columns}
 \end{frame}
 
-
-\section{Proraèun \dots}
+\subsection{Rezultati}
+\begin{frame}
+	\begin{table}
+		%\vspace{12pt}
+		\begin{tabular}{l|rr}
+			& Pre pro\v{s}irenja & Polse pro\v{s}irenja \\
+			\hline
+			Poslato paketa & 24998 & 24998\\
+			Primljeno paketa & 13144 & 23808\\
+			Izgubljeno paketa & 11854 & 1190\\
+		\end{tabular}
+	\end{table}
+	\begin{block}{Zaklju\v{c}ak}
+		\begin{itemize}
+			\item Dosta manje izgubljenih paketa
+			\item Procenat izgubljenih paketa smanjen sa $47.42\%$ na $4.76\%$
+		\end{itemize}
+	\end{block}
+\end{frame}
+\section{Zaklju\v{c}ak}
 
 \begin{frame}
- \frametitle{Primer}
- \begin{exampleblock}{Zadatak}<1->
-	Poruke fiksne dužine 1000 B, koje se generišu po Poissonovoj raspodeli, prenose se linijom na kojoj je protok 9600 b/s. Iskorišæenost linije iznosi 70\%. Odrediti proseèno trajanje èekanja.
-\end{exampleblock}
-\begin{alertblock}{Rešenje:}<2->
-\begin{gather*}
-\uncover<2-> \tau=\mu^{-1}=\displaystyle{\frac{1000\cdot8\mbox{ b}}{9600\mbox{ b/s}}}=0,\!83\mbox{ s} ,\quad \rho=\lambda \tau = 0,\!7\ \\[1ex]
-\uncover<3->{T_{Q}=\frac{\rho}{2\mu(1-\rho)}= 0,\!97\mbox{ s}}
-\end{gather*}
-
-\end{alertblock}
+	\frametitle{\textit{Summa Summarum}}
+	
+		\begin{itemize}
+			\item \v{S}ta sam o\v{c}ekivao?
+			\item \v{S}ta sam postigao?
+			\item Iskustva u radu sa NS-3
+			\item NS-3 i PMT
+		\end{itemize}
+		
 \end{frame}
 
 \end{document}

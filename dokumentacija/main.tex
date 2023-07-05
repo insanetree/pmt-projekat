@@ -118,7 +118,8 @@
 			p2p.SetDeviceAttribute("DataRate", 
 			    StringValue(IncreasedBandwidth));
 		}
-		NetDeviceContainer n1n0 = p2p.Install(nodes.Get(1), nodes.Get(0));
+		NetDeviceContainer n1n0 = p2p.Install(nodes.Get(1),
+		    nodes.Get(0));
 	\end{verbatim}
 	
 	Možemo primetiti da će veza između računara 0 i 1 biti povećanog ka\-pa\-citeta ako parametar \verb|optimize| ima vrednost \verb|true|.
