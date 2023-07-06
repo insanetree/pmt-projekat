@@ -51,8 +51,10 @@
 		\label{fig:topologija}
 	\end{figure}
 	
-	Prvobitno su kapaciteti svih linkova isti i iznose 1\! Mbps.  Aplikacije konstantno šalju pakete veličine 200\! b brzinom od 5000 paketa u sekundi. Tako se prouzrokuje zagušenje saobraćaja u mrežnom uređaju u računaru 0 koji se manifestuje gubitkom paketa. Potom se kapacitet linka poveća na 10\! Mbps i posmatra se kako su se promenile performanse mreže.\\
-	IP adrese dodeljene mrežnim uređajima su navedene u tabeli \ref{tab:adr}
+	Prvobitno su kapaciteti svih linkova isti i iznose 1\! Mbps.  Tokom perioda od 20 sekundi aplikacije konstantno šalju pakete veličine 200\! B brzinom od 625 paketa u sekundi. Tako se prouzrokuje zagušenje saobraćaja u mrežnom uređaju u računaru 0 koji se manifestuje gubitkom paketa. Potom se kapacitet linka poveća na 10\! Mbps i posmatra se kako su se promenile performanse mreže.
+	
+	
+	Redovi u mre\v{z}nim ure\dj{}ajima su pode\v{s}eni tako da mogu da prime 1024 paketa. Ako u trenutku kad je red za slanje pun u ure\dj{}aj prispe paket za slanje, taj paket \'{c}e biti odba\v{c}en. IP adrese dodeljene mrežnim uređajima su navedene u tabeli \ref{tab:adr}
 	\begin{table}[htb]
 		\centering
 		\caption{Adrese mrežnih uređaja}
@@ -182,10 +184,10 @@
 	
 	
 	\chapter{Rezultati}
-	U tabeli \ref{tab:pakpre} su prikazani rezultati simulacije pre optimizacije, a u tabeli \ref{tab:pakposle} posle optimizacije
+	U tabeli \ref{tab:pakpre} su prikazani rezultati simulacije pre pro\v{s}irenja, a u tabeli \ref{tab:pakposle} posle pro\v{s}irenja.
 	\begin{table}[htb]
 		\centering
-		\caption{Pre optimizacije}
+		\caption{Pre pro\v{s}irenja}
 		\label{tab:pakpre}
 		\medskip
 		\begin{tabular}{l|r}
@@ -197,7 +199,7 @@
 	\end{table}
 	\begin{table}[htb]
 		\centering
-		\caption{Posle optimizacije}
+		\caption{Posle pro\v{s}irenja}
 		\label{tab:pakposle}
 		\medskip
 		\begin{tabular}{l|r}
@@ -210,6 +212,50 @@
 	
 	Rezultati su pokazali da je zbog uskog grla drastično smanjen kvalitet saobraćaja. Posle optimizacije je procenat izgubljenih paketa smanjen sa $47.42\%$ na $4.76\%$.
 	
+	\chapter{Napomene}
+	\section{Izgubljeni paketi u pobolj\v{s}anoj topologiji}
+	U ovom delu rada \'{c}e biti obja\v{s}njeno  za\v{s}to i posle pro\v{s}irenja linka dolazi do izgubljenih paketa. Kada se pogleda brzina slanja paketa u aplikacijama, mo\v{z}e se prmetiti da je protok jednak 10\! Mbps (paketi veli\v{c}ine 200\! B brzinom 625 paketa u sekundi).
+	
+	Konsultacijom dokumentacije simulatora se vidi da se pode\v{s}avanje veli\v{c}ine paketa koji \'{c}e generisati \texttt{OnOffApplication} odnosi samo na veli\v{c}inu korisnog dela paketa (\emph{payload}), na koji \'{c}e se dodati jo\v{s} 8\! B UDP zaglavlja, 20\! B IP zaglavlja i 2\! B PPP zaglavlja. 
+	
+	Mo\v{z}e se izra\v{c}unati da iz reda za slanje mre\v{z}nog ure\dj{}aja paketi izlaze brzinom od $\dfrac{10^{6}}{230 \cdot 8} \approx 544$ paketa u sekundi. Tada je relativna razlika brzine pristizanja paketa u red i brzine izlaska paketa iz reda jednaka 81 paket u sekundi. U simulaciji su aplikacije pokrenute tokom 20 sekundi i za to vreme \'{c}e se u mre\v{z}nim ure\dj{}ajima ra\v{c}unara 2 i 3 prispeti $81 \cdot 20 = 1620$ paketa ,,vi\v{s}ka''. Po\v{s}to je veli\v{c}ina reda za slanje 1024 paketa, mo\v{z}e se izracunati da \'{c}e posle popunjavanja reda biti odba\v{c}eno $1620 - 1024 = 596$ paketa, \v{s}to se sla\v{z}e sa rezultatima silulacije.
+	
+	
+	\begin{table}[htb]
+		\centering
+		\caption{Posle pro\v{s}irenja, ve\'c{i} paket}
+		\label{tab:vecipaket}
+		\medskip
+		\begin{tabular}{l|r}
+			\hline
+			Poslato paketa & 12498 \\
+			Primljeno paketa & 12498 \\
+			Izgubljeno paketa & 0 
+		\end{tabular}
+	\end{table}
+	
+	
+	Ako se simulacija izmeni tako da aplikacije generi\v{s}u pakete veli\v{c}ine 400\! B. Tada u redove slanja paketi dolaze brzinom $\dfrac{10^{6}}{400 \cdot 8} = 312.5$ paketa u sekundi, a odlaze brzinom $\dfrac{10^{6}}{430 \cdot 8} \approx 291$ paketa u sekundi. Tada je relativna razlika brzina dolaska i odlaska paketa 21.5 paketa u sekundi. Za 20 sekundi bi\'{c}e generisano $21.5 \cdot 20 = 430$ paketa ,,vi\v{s}ka''. Po\v{s}to je red veli\v{c}ine 1024 paketa, ne\'{c}e do\'{c}i do odbacivanja paketa. U tabeli \ref{tab:vecipaket} je prikazan rezultat ove simulacije.
+	
+	\section{Izbor L4 protokola}
+	U ovom delu rada \'ce biti obja\v{s}njeno za\v{s}to je kao protokol transportnog sloja u simulaciji iskori\v{s}\'cen UDP umesto TCP.
+	
+	Cilj simulacije je bio da se poka\v{z}e zagu\v{s}enje, pa TCP nije bio pogodan jer implementira razne algoritme za izbegavanje zagu\v{s}enja. \cite{tcp} 
+	
+	U tabeli \ref{tab:tcp} je dat rezultat simulacije pre pro\v{s}irenja kapaciteta linka izme\dj{}u racunara 0 i 1. Brojani su samo paketi koji su i\v{s}li ka ra\v{c}unaru 0. Nisu brojani povratni paketi sa kontrolnim podacima.
+	
+	\begin{table}[htb]
+		\centering
+		\caption{Pre pro\v{s}irenja, TCP}
+		\label{tab:tcp}
+		\medskip
+		\begin{tabular}{l|r}
+			\hline
+			Poslato paketa & 5834 \\
+			Primljeno paketa & 5567 \\
+			Izgubljeno paketa & 267 
+		\end{tabular}
+	\end{table}
 	\chapter{Zaključak}
 	U ovom projektu je prikazana simulacija zagušenja korišćenjem NS-3 simulatora. Opisana je mreža u kojoj je zagušenje pokazano i objašnjena je skripta  kojom je simulacija kreirana. Pokazano je kako nedovoljan kapacitet linka negativno utiče na kvalitet saobraćaja. Topologija je relativno jednostavna jer cilj rada nije bila kompleksnost, nego pokazivanje mogućnosti analize mreže uz pomoć simulatora. 
 	\begin{thebibliography}{10}
@@ -217,6 +263,8 @@
 		\bibitem{ns3man} \emph{ns-3 Tutuorial}, izdanje za ns-3.38, 2023; dostupno online:
 		https://www.nsnam.org/docs/release/3.38/tutorial/ns-3-tutorial.pdf
 		\bibitem{ns3doc} ns-3 dokumentacija: https://www.nsnam.org/docs/doxygen/index.html
+		\bibitem{bjelica} Milan Bjelica, \emph{Telekomunikacione i ra\v{c}unarske mre\v{z}e}, Mensa Srbije, 2021. 
+		\bibitem{tcp} Wesley Eddy, \emph{RFC 9293, Transmission Control Protocol (TCP)}, RFC Editor, 2022, https://www.rfc-editor.org/info/rfc9293
  	\end{thebibliography}
  	
 	\chapter*{Prilozi} \addcontentsline{toc}{chapter}{Prilozi}
@@ -280,7 +328,8 @@
 		#define BaseBandwidth "1Mbps"
 		#define IncreasedBandwidth "10Mbps"
 		#define QueueSize "1024p"
-		#define LinkDelaz "5ms"
+		#define LinkDelay "5ms"
+		#define PacketSize 200
 		
 		
 		using namespace ns3;
@@ -340,7 +389,7 @@
 			sender.SetAttribute("OffTime", 
 			    StringValue("ns3::ConstantRandomVariable[Constant=0]"));
 			sender.SetAttribute("DataRate", StringValue(BaseBandwidth));
-			sender.SetAttribute("PacketSize", UintegerValue(200));
+			sender.SetAttribute("PacketSize", PacketSize);
 			ApplicationContainer senderApps = 
 			    sender.Install(NodeContainer(nodes.Get(2), nodes.Get(3)));
 			senderApps.Start(Seconds(0.0));

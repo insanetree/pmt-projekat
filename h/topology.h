@@ -17,6 +17,7 @@
 #define IncreasedBandwidth "10Mbps"
 #define QueueSize "1024p"
 #define LinkDelay "5ms"
+#define PacketSize 200
 
 using namespace ns3;
 

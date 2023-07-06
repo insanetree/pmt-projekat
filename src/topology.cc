@@ -40,7 +40,7 @@ void buildTopology(bool optimize){
 	sender.SetAttribute("OnTime", StringValue("ns3::ConstantRandomVariable[Constant=1]"));
 	sender.SetAttribute("OffTime", StringValue("ns3::ConstantRandomVariable[Constant=0]"));
 	sender.SetAttribute("DataRate", StringValue(BaseBandwidth));
-	sender.SetAttribute("PacketSize", UintegerValue(200));
+	sender.SetAttribute("PacketSize", UintegerValue(PacketSize));
 	ApplicationContainer senderApps = sender.Install(NodeContainer(nodes.Get(2), nodes.Get(3)));
 	senderApps.Start(Seconds(0.0));
 	senderApps.Stop(Seconds(20.0));
